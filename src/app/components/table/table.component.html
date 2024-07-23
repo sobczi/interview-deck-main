@@ -1,0 +1,28 @@
+<div class="game-wrapper" [class.red]="currentPlayer === Player.first" [class.blue]="currentPlayer === Player.second">
+	@if (gameInProgress) {
+		@for(card of cards; track card) {
+			@if (!card.pickedBy) {
+				<img
+					src="https://deckofcardsapi.com/static/img/back.png"
+					(click)="handleCardClick(card.id)"
+				/>
+			} @else {
+				<div class="card-wrapper" [class.red]="card.pickedBy === Player.first" [class.blue]="card.pickedBy === Player.second">
+					<img
+						[src]="card.images.png"
+						width="72px"
+						height="100px"
+					/>
+				</div>
+			}
+		}
+	} @else if (!gameInProgress && currentWinner) {
+		<div class="game-ended">
+			<strong>Game ended.</strong>
+			<span>
+				Winner is: <strong>{{ currentWinner }}</strong> player.
+			</span>
+			<button (click)="handleRestartGameClick()">Restart game</button>
+		</div>
+	}
+</div>

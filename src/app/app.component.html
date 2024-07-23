@@ -1,0 +1,43 @@
+<div class="game-info">
+	@if (currentPlayer$ | async; as currentPlayer) {
+		<span>
+			<strong>Current player: </strong>
+			<span [class.red]="currentPlayer === Player.first" [class.blue]="currentPlayer === Player.second">
+				{{ currentPlayer }}
+			</span>
+		</span>
+	}
+
+	<span>
+		<strong>First player score: </strong>
+		{{ firstPlayerScore$ | async }}
+	</span>
+
+	<span>
+		<strong>Second player score: </strong>
+		{{ secondPlayerScore$ | async }}
+	</span>
+
+	<span>
+		<strong>
+			Cards left:
+		</strong>
+		{{ cardsLeftCounter$ | async }}
+	</span>
+</div>
+
+@if({
+	counter: cardsLeftCounter$ | async,
+	cards: cards$ | async,
+	currentWinner: currentWinner$ | async,
+	currentPlayer: currentPlayer$ | async
+}; as data) {
+	<app-table
+		[cards]="data.cards ? data.cards : []"
+		[currentPlayer]="data.currentPlayer ? data.currentPlayer : Player.first"
+		[gameInProgress]="data.counter ? data.counter > 0 : false"
+		[currentWinner]="data.currentWinner ? data.currentWinner : undefined"
+		(pickedCardId)="handleCardPick($event)"
+		(restartGameClick)="handleRestartGameClick()"
+	/>
+}
